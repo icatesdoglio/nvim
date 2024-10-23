@@ -26,3 +26,20 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Alter tabs
 vim.keymap.set("n", ">", "V><esc>")
 vim.keymap.set("n", "<", "V<<esc>")
+
+-- Run python file in new terminal window
+-- Grab file location
+vim.keymap.set("n", "<leader>py", "", {
+	callback = function()
+		local file_name = vim.fn.expand("%")
+		local bang = "!wt -w 0 python -i " .. file_name
+		vim.api.nvim_command(bang)
+	end,
+	desc = "Run [Py]thon file",
+})
+
+-- Cycle through quickfix list
+vim.keymap.set("n", "<leader>[", ":cprev<CR>")
+vim.keymap.set("n", "<leader>]", ":cnext<CR>")
+
+-- vim.keymap.set("n", "<leader>py", ":!wt -w 0 python", { desc = "Run [Py]thon file" })

@@ -5,6 +5,9 @@ return {
 	config = function()
 		require("harpoon"):setup()
 	end,
+	key = function()
+		return vim.loop.cwd()
+	end,
 	keys = {
 		{
 			"<leader>ha",

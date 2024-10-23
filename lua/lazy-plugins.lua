@@ -23,7 +23,9 @@ require("lazy").setup({
 	require("plugins.harpoon"),
 	require("plugins.undotree"),
 	require("plugins.treesitter"),
-	require("plugins.harpoon_term"),
+	require("plugins.fugitive"),
+	require("plugins.textobjects"),
+	require("plugins.oil"),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {},

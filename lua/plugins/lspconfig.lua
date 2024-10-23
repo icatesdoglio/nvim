@@ -75,6 +75,7 @@ return {
 					},
 				},
 			},
+			rust_analyzer = {},
 			lua_ls = {
 				-- cmd = {...},
 				-- filetypes = { ...},
@@ -86,7 +87,8 @@ return {
 						},
 						-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 						diagnostics = {
-							disable = { "missing-fields" },
+							-- disable = { "missing-fields" },
+							globals = { "vim" },
 						},
 					},
 				},
@@ -97,6 +99,8 @@ return {
 		local ensure_installed = vim.tbl_keys(servers or {})
 		vim.list_extend(ensure_installed, {
 			"stylua",
+			"pyright",
+			"rust-analyzer",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
