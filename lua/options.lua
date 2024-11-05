@@ -39,7 +39,7 @@ vim.g.undotree_DiffCommand = "FC"
 vim.g.terminal_emulator = "powershell"
 
 -- Shell Emulator Not sure I want this
-vim.o.shell = "powershell"
+vim.opt.shell = "powershell"
 
 vim.o.shellcmdflag =
 	"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
@@ -49,5 +49,3 @@ vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
 vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
 
 vim.o.shellquote = ""
-
-vim.o.shellxquote = ""

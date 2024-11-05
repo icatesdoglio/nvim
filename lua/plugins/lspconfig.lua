@@ -6,7 +6,6 @@ return {
 		{ "williamboman/mason.nvim", config = true },
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 		{ "j-hui/fidget.nvim", opts = {} },
 
 		-- Allows extra capabilities provided by nvim-cmp
@@ -72,6 +71,7 @@ return {
 						completion = {
 							callSnippet = "Replace",
 						},
+						diagnostics = {},
 					},
 				},
 			},
@@ -85,9 +85,7 @@ return {
 						completion = {
 							callSnippet = "Replace",
 						},
-						-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 						diagnostics = {
-							-- disable = { "missing-fields" },
 							globals = { "vim" },
 						},
 					},
