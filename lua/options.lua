@@ -33,6 +33,7 @@ vim.opt.splitright = true
 
 -- Minscreen lines at edges
 vim.opt.scrolloff = 10
+vim.opt.colorcolumn = "80"
 
 vim.g.undotree_DiffCommand = "FC"
 
@@ -49,3 +50,5 @@ vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
 vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
 
 vim.o.shellquote = ""
+
+-- vim: ts=2 sts=2 sw=2 et

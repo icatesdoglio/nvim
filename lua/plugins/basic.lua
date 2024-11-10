@@ -1,6 +1,6 @@
 return {
 	"tpope/vim-sleuth",
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
+	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
 			signs = {
@@ -13,15 +13,7 @@ return {
 		},
 	},
 
-	-- Highlight todo, notes, etc in comments
 	{
-		"folke/todo-comments.nvim",
-		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = { signs = false },
-	},
-
-	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
 		config = function()
 			-- Better Around/Inside textobjects
@@ -39,16 +31,9 @@ return {
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
 
-			-- Simple and easy statusline.
-			--  You could remove this setup call if you don't like it,
-			--  and try some other statusline plugin
 			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
 			statusline.setup({ use_icons = vim.g.have_nerd_font })
 
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
 			---@diagnostic disable-next-line: duplicate-set-field
 			statusline.section_location = function()
 				return "%2l:%-2v"
@@ -56,4 +41,10 @@ return {
 		end,
 	},
 	{ "Bilal2453/luvit-meta", lazy = true },
+	{
+		"tpope/vim-fugitive",
+		cmd = "Git",
+	},
 }
+
+-- vim: ts=2 sts=2 sw=2 et

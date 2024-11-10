@@ -30,5 +30,10 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 		},
+		stylua = {
+			args = { "--indent-type", "Spaces", "--indent-width", "2" },
+		},
 	},
 }
+
+-- vim: ts=2 sts=2 sw=2 et

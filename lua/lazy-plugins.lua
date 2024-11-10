@@ -23,27 +23,23 @@ require("lazy").setup({
 	require("plugins.harpoon"),
 	require("plugins.undotree"),
 	require("plugins.treesitter"),
-	require("plugins.fugitive"),
 	require("plugins.textobjects"),
 	require("plugins.oil"),
 	require("plugins.obsidian"),
 	require("plugins.sql"),
-	--require("plugins.slime"),
 	ui = {
 		icons = vim.g.have_nerd_font and {},
 	},
 })
 
--- Make line numbers actually readable
 function LineNumberColors()
-	--vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#FF66FF", bold = true })
 	vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#BB9AF7", bold = true })
 	vim.api.nvim_set_hl(0, "LineNr", { fg = "#FFA500", bold = true })
-	--vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#9933FF", bold = true })
 	vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#F5BDE6", bold = true })
 end
 LineNumberColors()
 
+vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 0, bg = "#3A3A80" })
 --"palette": {
 --  "blue": "#8AADF4",
 --  "closer": "p:os",
@@ -52,4 +48,5 @@ LineNumberColors()
 --  "os": "#ACB0BE",
 --  "pink": "#F5BDE6"
 --}
+
 -- vim: ts=2 sts=2 sw=2 et

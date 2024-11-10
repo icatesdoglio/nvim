@@ -25,7 +25,7 @@ return {
 	--		desc = "Send to ipython",
 	--	},
 	--},
-	config = function()
-		vim.keymap.set("x", "<leader>-bb", "<cmd>echo Hello!<CR>", { noremap = true })
-	end,
+	--config = function()
+	--	vim.keymap.set("x", "<leader>-bb", "<cmd>echo Hello!<CR>", { noremap = true })
+	--end,
 }

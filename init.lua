@@ -13,3 +13,5 @@ require("keymaps")
 require("lazy-plugins")
 
 require("nvim-treesitter.install").compilers = { "clang" }
+
+-- vim: ts=2 sts=2 sw=2 et

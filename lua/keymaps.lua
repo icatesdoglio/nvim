@@ -15,12 +15,6 @@ vim.keymap.set("i", "<right>", '<cmd>echo "Use normal mode to navigate"<CR>')
 vim.keymap.set("i", "<up>", '<cmd>echo "Use normal mode to navigate"<CR>')
 vim.keymap.set("i", "<down>", '<cmd>echo "Use normal mode to navigate"<CR>')
 
---  See `:help wincmd` for a list of all window commands
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-
 -- Swap rows in visual mode
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -65,7 +59,7 @@ vim.keymap.set("n", "<", "V<<esc>")
 vim.keymap.set("n", "<leader>py", "", {
 	callback = function()
 		local file_name = vim.fn.expand("%")
-		local bang = "!wt -w 0 python -i " .. file_name
+		local bang = "!start ../ahk_scripts/send_to_terminal.ahk" .. file_name
 		vim.api.nvim_command(bang)
 	end,
 	desc = "Run [Py]thon file",
@@ -74,3 +68,8 @@ vim.keymap.set("n", "<leader>py", "", {
 -- Cycle through quickfix list
 vim.keymap.set("n", "<leader>[", ":cprev<CR>")
 vim.keymap.set("n", "<leader>]", ":cnext<CR>")
+
+-- Re-source snippets
+vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/AppData/Local/nvim/lua/plugins/autocomplete.lua<CR>")
+
+-- vim: ts=2 sts=2 sw=2 et
