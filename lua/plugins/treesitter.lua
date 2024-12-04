@@ -20,9 +20,7 @@ return {
 		auto_install = true,
 		highlight = {
 			enable = true,
-			additional_vim_regex_highlighting = { "ruby" },
 		},
-		indent = { enable = true, disable = { "ruby" } },
 		incremental_selection = {
 			enable = true,
 			keymaps = {
