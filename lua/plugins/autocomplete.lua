@@ -63,6 +63,7 @@ return {
 				},
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
+				{ name = "custom_snippets" },
 				{ name = "path" },
 				{ name = "vim-dadbod-completion" },
 				{ name = "buffer" },

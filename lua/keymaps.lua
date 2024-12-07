@@ -68,12 +68,22 @@ local function format_to_python()
 end
 
 local function send_to_repl()
-	local file_loc = "ahk_scripts/send_to_repl.ahk"
+	local file_loc = "c:/Users/icates-doglio/AppData/Local/nvim/ahk_scripts/send_to_repl.ahk"
 	os.execute('start "" Autohotkey "' .. file_loc .. '"')
 end
 
-vim.keymap.set("v", "<leader>y", function()
+vim.keymap.set("v", "<leader>yr", function()
 	vim.cmd('normal! "+y')
+	format_to_python()
+end, { noremap = true, silent = true })
+
+vim.keymap.set("v", "<leader>yp", function()
+	vim.cmd('normal! "+y')
+	format_to_python()
+	send_to_repl()
+end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>v", function()
 	format_to_python()
 	send_to_repl()
 end, { noremap = true, silent = true })
@@ -95,6 +105,10 @@ vim.keymap.set("n", "<leader>[", ":cprev<CR>")
 vim.keymap.set("n", "<leader>]", ":cnext<CR>")
 
 -- Re-source snippets
-vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/AppData/Local/nvim/lua/plugins/custom_snippets.lua<CR>")
+vim.keymap.set("n", "<leader><leader>s", function()
+	require("luasnip").cleanup()
+	dofile(vim.fn.stdpath("config") .. "/lua/plugins/custom_snippets.lua")
+	print("Snippets reloaded!")
+end, { noremap = true, silent = true })
 
 -- vim: ts=2 sts=2 sw=2 et
