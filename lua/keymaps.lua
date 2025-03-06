@@ -1,3 +1,5 @@
+CONF = os.getenv("XDG_CONFIG_HOME")
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -48,6 +50,9 @@ vim.keymap.set("n", ">", "V><esc>")
 vim.keymap.set("n", "<", "V<<esc>")
 
 -- Format yanked text for python format:
+local python_version = io.popen("python --version")
+print(python_version)
+
 local function format_to_python()
 	local lines = vim.fn.getreg("+", 1, true)
 	local leading_whitespace = lines[1]:match("^(%s*)%S")
@@ -57,20 +62,39 @@ local function format_to_python()
 	end
 	leading_whitespace = #leading_whitespace
 
+	local out = {}
+
 	for i, line in ipairs(lines) do
-		lines[i] = line:sub(leading_whitespace + 1)
+		local cleaned_line = line:sub(leading_whitespace + 1)
+		--if cleaned_line:match("%S") then
+		table.insert(out, cleaned_line)
+		--end
 	end
 
-	local out = table.concat(lines, "\n")
+	local cleaned_lines = table.concat(out, "\n")
 
-	vim.notify("Formatted system register for python repl")
-	vim.fn.setreg("+", out)
+	--vim.notify("Formatted system register for " .. python_version)
+	vim.fn.setreg("+", cleaned_lines)
 end
 
 local function send_to_repl()
-	local file_loc = "c:/Users/icates-doglio/AppData/Local/nvim/ahk_scripts/send_to_repl.ahk"
+	local file_loc = CONF .. "/nvim/ahk_scripts/send_to_repl.ahk"
 	os.execute('start "" Autohotkey "' .. file_loc .. '"')
 end
+
+vim.keymap.set("n", "<leader>rp", function()
+	print("Rerunning file in python repl")
+	local ahk_script = CONF .. "/nvim/ahk_scripts/resource_python.ahk"
+	local file_loc = vim.fn.expand("%:p")
+	os.execute('start "" Autohotkey "' .. ahk_script .. '" "' .. file_loc .. '"')
+end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>rr", function()
+	print("Resourcing file in R repl")
+	local ahk_script = CONF .. "/nvim/ahk_scripts/resource_R.ahk"
+	local file_loc = vim.fn.expand("%:p")
+	os.execute('start "" Autohotkey "' .. ahk_script .. '" "' .. file_loc .. '"')
+end, { noremap = true, silent = true })
 
 vim.keymap.set("v", "<leader>yr", function()
 	vim.cmd('normal! "+y')
@@ -110,5 +134,7 @@ vim.keymap.set("n", "<leader><leader>s", function()
 	dofile(vim.fn.stdpath("config") .. "/lua/plugins/custom_snippets.lua")
 	print("Snippets reloaded!")
 end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader><leader>c", ':!pdflatex $(Split-Path -Leaf "%")<CR>')
 
 -- vim: ts=2 sts=2 sw=2 et

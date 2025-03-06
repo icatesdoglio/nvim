@@ -91,18 +91,48 @@ return {
 					},
 				},
 			},
+			r_language_server = {
+				cmd = {
+					"C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/bin/R.exe",
+					"--slave",
+					"-e",
+					"languageserver::run()",
+				},
+				filetypes = { "r", "rmd", "rmarkdown" },
+				capabilities = {
+					textDocument = {
+						completion = { completionItem = { snippetSupport = true } },
+					},
+				},
+				settings = {
+					R = {
+						lsp = {
+							diagnostics = {
+								suppress = { "line_length_linter" },
+							},
+						},
+						path = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/",
+						library = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/library",
+					},
+				},
+			},
 		}
+
 		require("mason").setup()
 
 		local ensure_installed = vim.tbl_keys(servers or {})
 		vim.list_extend(ensure_installed, {
 			"stylua",
 			"pyright",
-			"rust-analyzer",
+			"rust_analyzer",
+			"texlab",
+			"r_language_server",
 		})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		require("mason-lspconfig").setup({
+			ensure_installed = ensure_installed,
+			automatic_installation = false,
 			handlers = {
 				function(server_name)
 					local server = servers[server_name] or {}
@@ -114,5 +144,4 @@ return {
 		})
 	end,
 }
-
 -- vim: ts=2 sts=2 sw=2 et

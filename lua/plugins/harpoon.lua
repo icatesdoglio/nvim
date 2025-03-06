@@ -25,35 +25,35 @@ return {
 			desc = "[H]arpoon [M]enu",
 		},
 		{
-			"<leader>h1",
+			"<leader>hs",
 			function()
 				require("harpoon"):list():select(1)
 			end,
 			desc = "[H]arpoon to [1]",
 		},
 		{
-			"<leader>h2",
+			"<leader>hd",
 			function()
 				require("harpoon"):list():select(2)
 			end,
 			desc = "[H]arpoon to [2]",
 		},
 		{
-			"<leader>h3",
+			"<leader>hf",
 			function()
 				require("harpoon"):list():select(3)
 			end,
 			desc = "[H]arpoon to [3]",
 		},
 		{
-			"<leader>h4",
+			"<leader>hg",
 			function()
 				require("harpoon"):list():select(4)
 			end,
 			desc = "[H]arpoon to [4]",
 		},
 		{
-			"<leader>h5",
+			"<leader>hh",
 			function()
 				require("harpoon"):list():select(5)
 			end,
