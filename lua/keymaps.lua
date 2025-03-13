@@ -1,5 +1,4 @@
-CONF = os.getenv("XDG_CONFIG_HOME")
-
+local conf = os.getenv("XDG_CONFIG_HOME")
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -49,67 +48,82 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("n", ">", "V><esc>")
 vim.keymap.set("n", "<", "V<<esc>")
 
--- Format yanked text for python format:
-local python_version = io.popen("python --version")
-print(python_version)
+local function visual_selection()
+	local _, ls, cs = unpack(vim.fn.getpos("'<")) -- Start position
+	local _, le, ce = unpack(vim.fn.getpos("'>")) -- End position
 
-local function format_to_python()
-	local lines = vim.fn.getreg("+", 1, true)
-	local leading_whitespace = lines[1]:match("^(%s*)%S")
+	-- Convert from 1-based to 0-based indexing
+	ls, cs = ls - 1, cs - 1
+	le, ce = le - 1, ce
+
+	local lines = vim.api.nvim_buf_get_text(0, ls, cs, le, ce, {})
+	return lines
+end
+
+-- Format table of text to python repl format:
+local function format_to_python(tab)
+	local leading_whitespace = tab[1]:match("^(%s*)%S")
 
 	if leading_whitespace == nil then
-		return
+		return tab
 	end
 	leading_whitespace = #leading_whitespace
 
-	local out = {}
-
-	for i, line in ipairs(lines) do
-		local cleaned_line = line:sub(leading_whitespace + 1)
-		--if cleaned_line:match("%S") then
-		table.insert(out, cleaned_line)
-		--end
+	for i, line in ipairs(tab) do
+		tab[i] = line:sub(leading_whitespace + 1)
 	end
 
-	local cleaned_lines = table.concat(out, "\n")
-
-	--vim.notify("Formatted system register for " .. python_version)
-	vim.fn.setreg("+", cleaned_lines)
+	return tab
 end
 
-local function send_to_repl()
-	local file_loc = CONF .. "/nvim/ahk_scripts/send_to_repl.ahk"
-	os.execute('start "" Autohotkey "' .. file_loc .. '"')
+-- overwrite existing register with python repl formatting
+local function format_reg_to_python(reg)
+	local lines = format_to_python(vim.fn.getreg(reg, 1, true))
+	local out = table.concat(lines, "\n")
+
+	vim.notify("Formatted register " .. reg .. " for python repl")
+	vim.fn.setreg(reg, out)
+	return reg
 end
 
-vim.keymap.set("n", "<leader>rp", function()
-	print("Rerunning file in python repl")
-	local ahk_script = CONF .. "/nvim/ahk_scripts/resource_python.ahk"
-	local file_loc = vim.fn.expand("%:p")
-	os.execute('start "" Autohotkey "' .. ahk_script .. '" "' .. file_loc .. '"')
+-- Sends a table of text to a generic wezterm pane
+local function send_to_repl(pane_id, tab)
+	-- TODO: Need to format the table such that wezterm cli works properly
+	local something = table.concat(tab, "\n")
+	os.execute("wezterm cli send-text --pane-id " .. pane_id .. ' "' .. something .. '"')
+end
+
+-- AHK implementation: first pass
+-- local function send_to_repl()
+-- 	local file_loc = conf .. "nvim/ahk_scripts/send_to_repl.ahk"
+-- 	os.execute('start "" Autohotkey "' .. file_loc .. '"')
+-- end
+
+-- Formats register from getchar to python repl
+vim.keymap.set("v", "<leader>y", function()
+	local reg
+
+	reg = vim.fn.getchar()
+	reg = vim.fn.nr2char(reg)
+	vim.cmd('normal! "' .. reg .. "y")
+	format_reg_to_python(reg)
 end, { noremap = true, silent = true })
 
-vim.keymap.set("n", "<leader>rr", function()
-	print("Resourcing file in R repl")
-	local ahk_script = CONF .. "/nvim/ahk_scripts/resource_R.ahk"
-	local file_loc = vim.fn.expand("%:p")
-	os.execute('start "" Autohotkey "' .. ahk_script .. '" "' .. file_loc .. '"')
-end, { noremap = true, silent = true })
-
-vim.keymap.set("v", "<leader>yr", function()
-	vim.cmd('normal! "+y')
-	format_to_python()
-end, { noremap = true, silent = true })
-
-vim.keymap.set("v", "<leader>yp", function()
-	vim.cmd('normal! "+y')
-	format_to_python()
-	send_to_repl()
+-- send visual selection to python repl
+vim.keymap.set("v", "<leader>p", function()
+	local lines = visual_selection()
+	lines = format_to_python(lines)
+	send_to_repl(1, lines)
 end, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>v", function()
-	format_to_python()
-	send_to_repl()
+	local reg = vim.fn.getchar()
+	reg = vim.fn.nr2char(reg)
+	local lines = format_reg_to_python(reg)
+	print("Sending register " .. reg .. " to python repl")
+	-- TODO: need to systematically get the correct pane
+	local pane_id = 2
+	send_to_repl(pane_id, lines)
 end, { noremap = true, silent = true })
 
 --function Operator_yank(type)

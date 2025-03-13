@@ -38,7 +38,7 @@ return {
 			vim.keymap.set("n", "<leader>spW", function()
 				local word = vim.fn.expand("<cWORD>")
 				builtin.grep_string({ search = word })
-			end, { desc = "[P]roject [W]ORD [S]earch" })
+			end, { desc = "[S]earch [W]ORD" })
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })

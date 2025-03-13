@@ -10,7 +10,7 @@ return {
 		workspaces = {
 			{
 				name = "work",
-				path = "C:\\Users\\icates-doglio\\OneDrive - TEA\\vaults",
+				path = "~\\vaults",
 			},
 		},
 	},

@@ -6,3 +6,12 @@ def new_func():
     b = 2
     c = 3
     return a + b + c
+
+def main():
+    x = 5
+if __name__=="__main__":
+    main()
+
+
+
+
