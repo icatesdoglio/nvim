@@ -1,4 +1,4 @@
-local conf = os.getenv("XDG_CONFIG_HOME")
+CONF = os.getenv("XDG_CONFIG_HOME")
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -109,10 +109,11 @@ vim.keymap.set("v", "<leader>y", function()
 	format_reg_to_python(reg)
 end, { noremap = true, silent = true })
 
--- send visual selection to python repl
+-- send visual selection to python replkeymaps
 vim.keymap.set("v", "<leader>p", function()
 	local lines = visual_selection()
 	lines = format_to_python(lines)
+	print(lines)
 	send_to_repl(1, lines)
 end, { noremap = true, silent = true })
 
