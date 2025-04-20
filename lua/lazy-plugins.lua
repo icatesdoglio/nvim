@@ -18,7 +18,7 @@ require("lazy").setup({
 	require("plugins.whichkey"),
 	require("plugins.lazydev"),
 	require("plugins.lspconfig"),
-	require("plugins.autocomplete"),
+	require("plugins.blink_cmp"),
 	require("plugins.autoformat"),
 	require("plugins.harpoon"),
 	require("plugins.undotree"),
