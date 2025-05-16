@@ -20,7 +20,7 @@ return {
 				if vim.bo.filetype == "lua" then
 					return { "lsp", "path" }
 				elseif vim.bo.filetype == "sql" then
-					return { "lsp", "path", "buffer", "snippets", "vim_dadbod" }
+					return { "lsp", "path", "buffer", "snippets", "dadbod" }
 				else
 					return { "lsp", "path", "snippets", "buffer" }
 				end

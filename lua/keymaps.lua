@@ -93,12 +93,6 @@ local function send_to_repl(pane_id, tab)
 	os.execute("wezterm cli send-text --pane-id " .. pane_id .. ' "' .. something .. '"')
 end
 
--- AHK implementation: first pass
--- local function send_to_repl()
--- 	local file_loc = conf .. "nvim/ahk_scripts/send_to_repl.ahk"
--- 	os.execute('start "" Autohotkey "' .. file_loc .. '"')
--- end
-
 -- Formats register from getchar to python repl
 vim.keymap.set("v", "<leader>y", function()
 	local reg
@@ -126,18 +120,6 @@ vim.keymap.set("n", "<leader>v", function()
 	local pane_id = 2
 	send_to_repl(pane_id, lines)
 end, { noremap = true, silent = true })
-
---function Operator_yank(type)
---	-- Perform the yank operation in operator-pending mode
---	print("I've been executed")
---	vim.cmd("normal! `[v`]" .. type)
---	format_to_python()
---end
---
----- Map `leader-y` as an operator
---vim.keymap.set("n", "<leader>y", function()
---	vim.o.operatorfunc = "v:lua.Operator_yank"
---end, { noremap = true })
 
 -- Cycle through quickfix list
 vim.keymap.set("n", "<leader>[", ":cprev<CR>")

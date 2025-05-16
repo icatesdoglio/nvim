@@ -19,7 +19,6 @@ require("lazy").setup({
 	require("plugins.lazydev"),
 	require("plugins.lspconfig"),
 	require("plugins.blink_cmp"),
-	require("plugins.autoformat"),
 	require("plugins.harpoon"),
 	require("plugins.undotree"),
 	require("plugins.treesitter"),
@@ -27,8 +26,6 @@ require("lazy").setup({
 	require("plugins.oil"),
 	require("plugins.obsidian"),
 	require("plugins.sql"),
-	--require("plugins.r_nvim"),
-	--require("plugins.snacks"),
 	ui = {
 		icons = vim.g.have_nerd_font and {},
 	},
