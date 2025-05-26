@@ -3,9 +3,9 @@ local CURSOR_DIAG_NS = vim.api.nvim_create_namespace("cursor_diagnostics")
 return {
 	-- Main LSP Configuration
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		{ "mason-org/mason.nvim", opts = {} },
-		"mason-org/mason-lspconfig.nvim",
+  dependencies = {
+    { 'mason-org/mason.nvim', version = "^1.0.0", opts = {} },
+    { 'mason-org/mason-lspconfig.nvim', version = "^1.0.0" },
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		{ "j-hui/fidget.nvim", opts = {} },
 		"saghen/blink.cmp",
