@@ -1,3 +1,5 @@
+local CURSOR_DIAG_NS = vim.api.nvim_create_namespace("cursor_diagnostics")
+
 return {
 	-- Main LSP Configuration
 	"neovim/nvim-lspconfig",
@@ -79,15 +81,16 @@ return {
 		vim.diagnostic.config({
 			severity_sort = true,
 			float = { border = "rounded", source = "if_many" },
-			underline = { severity = vim.diagnostic.severity.ERROR },
-			signs = vim.g.have_nerd_font and {
+      underline = { severity = vim.diagnostic.severity.ERROR 
+      or vim.diagnostic.severity.WARN},
+      signs = true and {
 				text = {
 					[vim.diagnostic.severity.ERROR] = "󰅚 ",
 					[vim.diagnostic.severity.WARN] = "󰀪 ",
 					[vim.diagnostic.severity.INFO] = "󰋽 ",
 					[vim.diagnostic.severity.HINT] = "󰌶 ",
 				},
-			} or {},
+			},
 			virtual_text = {
 				source = "if_many",
 				spacing = 2,
@@ -95,13 +98,47 @@ return {
 					local diagnostic_message = {
 						[vim.diagnostic.severity.ERROR] = diagnostic.message,
 						[vim.diagnostic.severity.WARN] = diagnostic.message,
-						[vim.diagnostic.severity.INFO] = diagnostic.message,
-						[vim.diagnostic.severity.HINT] = diagnostic.message,
 					}
 					return diagnostic_message[diagnostic.severity]
 				end,
 			},
-		})
+    })
+
+
+    -- Show diagnostics only for the current line as virtual text
+    vim.api.nvim_create_autocmd("CursorHold", {
+      callback = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+        local diagnostics = vim.diagnostic.get(bufnr, {
+          lnum = line,
+          severity = {
+            min = vim.diagnostic.severity.HINT,
+            max = vim.diagnostic.severity.INFO,
+          },
+        })
+
+        if #diagnostics > 0 then
+          vim.diagnostic.show(CURSOR_DIAG_NS, bufnr, diagnostics, {
+            virtual_text = {
+              spacing = 2,
+              format = function(d)
+                return d.message
+              end,
+            },
+            signs = false,
+            underline = false,
+          })
+        end
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      callback = function()
+        vim.diagnostic.hide(CURSOR_DIAG_NS, vim.api.nvim_get_current_buf())
+      end,
+    })
+
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 		local servers = {
 			pyright = {
@@ -132,7 +169,7 @@ return {
 			},
 			r_language_server = {
 				cmd = {
-					"C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/bin/R.exe",
+					"R",
 					"--slave",
 					"-e",
 					"languageserver::run()",
@@ -150,8 +187,8 @@ return {
 								suppress = { "line_length_linter" },
 							},
 						},
-						path = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/",
-						library = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/library",
+						-- path = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/",
+						-- library = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/library",
 					},
 				},
 			},
