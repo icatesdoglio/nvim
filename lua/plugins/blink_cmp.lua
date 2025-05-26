@@ -8,7 +8,10 @@ return {
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {
-		keymap = { preset = "default" },
+		keymap = { 
+			preset = "default",
+			['C-space'] = { function(cmp) cmp.show({providers = {'buffer'} }) end}
+		},
 		appearance = {
 			nerd_font_variant = "mono",
 		},
