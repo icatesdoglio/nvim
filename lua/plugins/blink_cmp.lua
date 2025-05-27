@@ -8,18 +8,45 @@ return {
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {
-		keymap = { 
+		keymap = {
 			preset = "default",
-			['C-space'] = { function(cmp) cmp.show({providers = {'buffer'} }) end}
+			-- Hotkey to show the commands
+			['<C-l>'] = { function(ctx) require("blink-cmp").show() end}
 		},
 		appearance = {
 			nerd_font_variant = "mono",
 		},
 
 		-- (Default) Only show the documentation popup when manually triggered
-		completion = { documentation = { auto_show = false } },
+		completion = { documentation = { auto_show = false },
 
-		-- Default list of enabled providers defined so that you can extend it
+		menu = {
+			draw = {
+				components = {
+					kind_icon = {
+						text = function(ctx)
+							local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
+							return kind_icon
+						end,
+						-- (optional) use highlights from mini.icons
+						highlight = function(ctx)
+							local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+							return hl
+						end,
+					},
+					kind = {
+						-- (optional) use highlights from mini.icons
+						highlight = function(ctx)
+							local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
+							return hl
+						end,
+					}
+				}
+			}
+		}
+	},
+
+-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
 			default = function()
@@ -42,14 +69,16 @@ return {
 				---@type blink-cmp-conventional-commits.Options
 				opts = {},
 			},
+			path = {
+				opts = {
+					get_cwd = function(_)
+						return vim.fn.getcwd()
+					end,
+				},
+			},
 		},
 		},
 
-		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-		-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-		-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-		--
-		-- See the fuzzy documentation for more information
 		fuzzy = { implementation = "prefer_rust_with_warning" },
 	},
 	opts_extend = { "sources.default" },

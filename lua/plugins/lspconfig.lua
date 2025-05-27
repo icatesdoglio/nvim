@@ -165,7 +165,7 @@ return {
 			},
 			r_language_server = {
 				cmd = {
-					"R",
+					"R.exe",
 					"--slave",
 					"-e",
 					"languageserver::run()",
@@ -183,8 +183,8 @@ return {
 								suppress = { "line_length_linter" },
 							},
 						},
-						-- path = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/",
-						-- library = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.0/library",
+						-- path = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.2/",
+						-- library = "C:/Users/icates-doglio/AppData/Local/R/win-library/4.4",
 					},
 				},
 			},
