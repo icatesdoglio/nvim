@@ -22,7 +22,6 @@ require("lazy").setup({
 	require("plugins.harpoon"),
 	require("plugins.undotree"),
 	require("plugins.treesitter"),
-	require("plugins.textobjects"),
 	require("plugins.oil"),
 	require("plugins.obsidian"),
 	require("plugins.sql"),
