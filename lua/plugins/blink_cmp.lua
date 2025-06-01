@@ -1,7 +1,6 @@
 return {
 	"saghen/blink.cmp",
 	dependencies = {
-		"rafamadriz/friendly-snippets",
 		"disrupted/blink-cmp-conventional-commits"
 	},
 	version = "1.*",
@@ -51,11 +50,11 @@ return {
 		sources = {
 			default = function()
 				if vim.bo.filetype == "sql" then
-					return { "lsp", "path", "buffer", "snippets", "dadbod" }
+					return { "lsp", "path", "buffer", "dadbod" }
 				elseif vim.bo.filetype == "gitcommit" then
-					return { "lsp", "path", "buffer", "snippets", "conventional_commits" }
+					return { "lsp", "path", "buffer", "conventional_commits" }
 				else
-					return { "lsp", "path", "snippets", "buffer"}
+					return { "lsp", "path", "buffer"}
 				end
 			end,
 		providers = {
