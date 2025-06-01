@@ -194,7 +194,7 @@ return {
       else
         local file_loc = CONF .. "/nvim/ahk_scripts/send_to_repl.ahk"
         vim.fn.setreg("+", text) -- put it in clipboard register
-        os.execute('start "" Autohotkey "' .. file_loc .. '"' .. text)
+        vim.system {"Autohotkey", file_loc}
       end
     end
 

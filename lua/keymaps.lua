@@ -52,13 +52,40 @@ vim.keymap.set("n", "<", "V<<esc>")
 vim.keymap.set("n", "<leader>[", ":cprev<CR>")
 vim.keymap.set("n", "<leader>]", ":cnext<CR>")
 
--- Re-source snippets
+-- Re-source file
+vim.keymap.set("n", "<leader><leader>r", function()
+  local current_file = vim.fn.expand("%:p")
+  local file_loc
+  if vim.bo.filetype == "r" then
+    file_loc = CONF .. "/nvim/ahk_scripts/resource_R.ahk"
+    print(file_loc)
+  elseif vim.bo.filetype == "python" then
+    file_loc = CONF .. "/nvim/ahk_scripts/resource_python.ahk"
+  else
+    error("Unknown filetype: " .. vim.bo.filetype)
+  end
+  vim.system({ "Autohotkey", file_loc, current_file })
+end, {desc = "[R]e-source current file"})
+
+-- Just source r files
 vim.keymap.set("n", "<leader><leader>s", function()
+  local current_file = vim.fn.expand("%:p")
+  local file_loc
+  if vim.bo.filetype == "r" then
+    file_loc = CONF .. "/ahk_scripts/source_R.ahk"
+  else
+    error("Unknown filetype: " .. vim.bo.filetype)
+  end
+  vim.system({ "Autohotkey", file_loc, current_file })
+end, {desc = "[R]e-source current file"})
+
+-- Re-source snippets
+vim.keymap.set("n", "<leader><leader>x", function()
 	require("luasnip").cleanup()
 	dofile(vim.fn.stdpath("config") .. "/lua/plugins/custom_snippets.lua")
 	print("Snippets reloaded!")
 end, { noremap = true, silent = true })
 
-vim.keymap.set("n", "<leader><leader>c", ':!pdflatex $(Split-Path -Leaf "%")<CR>')
+vim.keymap.set("n", "<leader><leader>l", ':!pdflatex $(Split-Path -Leaf "%")<CR>')
 
 -- vim: ts=2 sts=2 sw=2 et
