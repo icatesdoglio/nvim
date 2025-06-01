@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Plugins
 require("lazy").setup({
 	require("plugins.theme"),
+  require("plugins.snacks"),
 	require("plugins.basic"),
 	require("plugins.telescope"),
 	require("plugins.whichkey"),
