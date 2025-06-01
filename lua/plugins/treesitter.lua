@@ -1,47 +1,41 @@
 return {
-  "nvim-treesitter/nvim-treesitter",
-  build = ":TSUpdate",
-  main = "nvim-treesitter.configs",
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    {
-      "nvim-treesitter/playground",
-      cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
-    },
-  },
-  opts = function(_, opts)
-    opts.ensure_installed = {
-      "bash",
-      "c",
-      "diff",
-      "html",
-      "lua",
-      "luadoc",
-      "markdown",
-      "markdown_inline",
-      "latex",
-      "query",
-      "vim",
-      "vimdoc",
-    }
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    main = "nvim-treesitter.configs",
+    opts = function(_, opts)
+      opts.ensure_installed = {
+        "bash",
+        "c",
+        "diff",
+        "html",
+        "lua",
+        "luadoc",
+        "markdown",
+        "markdown_inline",
+        "latex",
+        "query",
+        "vim",
+        "vimdoc",
+      }
 
-    opts.auto_install = true
+      opts.auto_install = true
 
-    opts.highlight = {
-      enable = true,
-    }
+      opts.highlight = {
+        enable = true,
+      }
 
-    opts.incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = "gnn",
-        node_incremental = "grn",
-        scope_incremental = "grc",
-        node_decremental = "grm",
-      },
-    }
-
-    opts.textobjects = {
+      opts.incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "gnn",
+          node_incremental = "grn",
+          scope_incremental = "grc",
+          node_decremental = "grm",
+        },
+        
+      }
+      opts.textobjects = {
       select = {
         enable = true,
         lookahead = true,
@@ -79,15 +73,21 @@ return {
         },
       },
     }
-
+    
     opts.playground = {
-      enable = true,
-      disable = {},
-      updatetime = 25,
-      persist_queries = false,
-    }
+        enable = true,
+        disable = {},
+        updatetime = 25,
+        persist_queries = false,
+      }
 
-    -- 💡 Flat statement stepper
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+
     local ts = vim.treesitter
     local ts_utils = require("nvim-treesitter.ts_utils")
     local ts_select = require("nvim-treesitter.textobjects.select")
@@ -220,5 +220,11 @@ return {
       send_to_repl(lines)
       goto_next_flat_statement()
     end)
-  end
+  end 
+  },
+  {
+    "nvim-treesitter/playground",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
+  },
 }

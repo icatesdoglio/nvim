@@ -12,18 +12,14 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugins
 require("lazy").setup({
-	require("plugins.theme"),
-  require("plugins.snacks"),
 	require("plugins.basic"),
+  require("plugins.snacks"),
 	require("plugins.telescope"),
 	require("plugins.whichkey"),
-	require("plugins.lazydev"),
 	require("plugins.lspconfig"),
 	require("plugins.blink_cmp"),
-	require("plugins.harpoon"),
-	require("plugins.undotree"),
 	require("plugins.treesitter"),
-	require("plugins.oil"),
+	require("plugins.harpoon"),
 	require("plugins.obsidian"),
 	require("plugins.sql"),
 	ui = {
