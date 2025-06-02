@@ -22,6 +22,7 @@ require("lazy").setup({
 	require("plugins.harpoon"),
 	require("plugins.obsidian"),
 	require("plugins.sql"),
+  require("plugins.ufo"),
 	ui = {
 		icons = vim.g.have_nerd_font and {},
 	},
