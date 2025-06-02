@@ -201,8 +201,12 @@ return {
 			handlers = {
 				function(server_name)
 					local server = servers[server_name] or {}
-					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					require("lspconfig")[server_name].setup(server)
+          server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+          capabilities.textDocument.foldingRange = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true
+          }
+          require("lspconfig")[server_name].setup(server)
 				end,
 			},
 		})

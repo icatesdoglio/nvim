@@ -51,27 +51,18 @@ vim.o.shellxquote = ""
 
 -- Folds
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = true
-vim.opt.foldlevel = 99
 vim.opt.fillchars = {
   foldopen = "▾",
   foldclose = "▸",
   fold = " ",
 }
 
-vim.opt.foldtext = "v:lua.require'custom.foldtext'.custom_foldtext()"
-
 -- adjustments to the Color Scheme
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     local current = vim.api.nvim_get_hl(0, { name = "Folded" })
     vim.api.nvim_set_hl(0, "Folded", {
-      fg = "#6C7EAB",
       bg = "NONE",
-      blend = 0,
-      bold = current.bold,
-      italic = current.italic,
     })
     -- Add custom line number colors
     vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#BB9AF7", bold = false })
