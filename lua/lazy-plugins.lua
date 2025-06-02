@@ -27,21 +27,4 @@ require("lazy").setup({
 	},
 })
 
-function LineNumberColors()
-	vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#BB9AF7", bold = true })
-	vim.api.nvim_set_hl(0, "LineNr", { fg = "#FFA500", bold = true })
-	vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#F5BDE6", bold = true })
-end
-LineNumberColors()
-
-vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 0, bg = "#3A3A80" })
---"palette": {
---  "blue": "#8AADF4",
---  "closer": "p:os",
---  "lavender": "#BB9AF7",
---  "orange": "#FFA500",
---  "os": "#ACB0BE",
---  "pink": "#F5BDE6"
---}
-
 -- vim: ts=2 sts=2 sw=2 et

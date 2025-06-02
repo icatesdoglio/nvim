@@ -17,6 +17,8 @@ return {
         "query",
         "vim",
         "vimdoc",
+        "r",
+        "python",
       }
 
       opts.auto_install = true

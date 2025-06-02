@@ -88,4 +88,9 @@ end, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader><leader>l", ':!pdflatex $(Split-Path -Leaf "%")<CR>')
 
+vim.keymap.set("v", "<leader>r", function()
+  local code = table.concat(vim.fn.getline("'<", "'>"), "\n")
+  loadstring(code)()
+end, { desc = "Run selected Lua code" })
+
 -- vim: ts=2 sts=2 sw=2 et
