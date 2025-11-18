@@ -83,6 +83,10 @@ return {
         persist_queries = false,
       }
 
+    opts.indent = {
+      enable = true
+    }
+
     end,
   },
   {
@@ -143,14 +147,24 @@ return {
     vim.keymap.set("n", "]v", goto_next_flat_statement, { desc = "Next flat statement (same depth)" })
 
     local function visual_selection()
+      local mode = vim.fn.visualmode()
+
+      local keys = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
+      vim.api.nvim_feedkeys(keys, "i", true)
+
       local _, ls, cs = unpack(vim.fn.getpos("'<")) -- Start position
       local _, le, ce = unpack(vim.fn.getpos("'>")) -- End position
 
       -- Convert from 1-based to 0-based indexing
       ls, cs = ls - 1, cs - 1
-      le, ce = le - 1, ce
+      le, ce = le, ce
 
-      local lines = vim.api.nvim_buf_get_text(0, ls, cs, le, ce, {})
+      local lines
+      if (mode == "V") then
+        lines = vim.api.nvim_buf_get_lines(0, ls - 1, le, false)
+      else 
+        lines = vim.api.nvim_buf_get_text(0, ls - 1, cs - 1, le, ce, {})
+      end
       return lines
     end
 
@@ -205,11 +219,6 @@ return {
       vim.cmd('normal! "' .. reg .. "y")
     end
 
-    local function feedkeys(keys, mode)
-      local termkeys = vim.api.nvim_replace_termcodes(keys, true, false, true)
-      vim.api.nvim_feedkeys(termkeys, mode, false)
-    end
-
     -- Execute control enter send
     vim.keymap.set("n", "<C-h>", function()
       -- setup special register
@@ -221,6 +230,20 @@ return {
 
       send_to_repl(lines)
       goto_next_flat_statement()
+    end)
+
+    vim.keymap.set("v", "<C-h>", function()
+      local register = "x"
+
+      vim.cmd('normal! "' .. register .. "y")
+
+      local lines = format_to_python(vim.fn.getreg(register, 1, true))
+      local _, le, _ = unpack(vim.fn.getpos("'>"))
+
+      -- move cursor to next line start
+      vim.api.nvim_win_set_cursor(0, {le + 1, 0})
+
+      send_to_repl(lines)
     end)
   end 
   },

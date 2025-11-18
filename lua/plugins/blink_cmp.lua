@@ -45,12 +45,12 @@ return {
 		}
 	},
 
--- Default list of enabled providers defined so that you can extend it
+		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
 			default = function()
 				if vim.bo.filetype == "sql" then
-					return { "lsp", "path", "buffer", "dadbod" }
+					return { "lsp", "path", "buffer" }
 				elseif vim.bo.filetype == "gitcommit" then
 					return { "lsp", "path", "buffer", "conventional_commits" }
 				else
@@ -78,7 +78,10 @@ return {
 		},
 		},
 
-		fuzzy = { implementation = "prefer_rust_with_warning" },
+    fuzzy = { implementation = "prefer_rust_with_warning" },
+    signature = { enabled = true }, 
 	},
 	opts_extend = { "sources.default" },
 }
+
+-- vim: ts=2 sts=2 sw=2 et
