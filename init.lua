@@ -24,7 +24,6 @@ vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 0, bg = "#3A3A80" })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
-    local current = vim.api.nvim_get_hl(0, { name = "Folded" })
     vim.api.nvim_set_hl(0, "Folded", {
       bg = "NONE",
     })
