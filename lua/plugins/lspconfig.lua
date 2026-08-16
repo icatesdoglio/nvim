@@ -4,8 +4,8 @@ return {
 	-- Main LSP Configuration
 	"neovim/nvim-lspconfig",
   dependencies = {
-    { 'mason-org/mason.nvim', version = "^1.0.0", opts = {} },
-    { 'mason-org/mason-lspconfig.nvim', version = "^1.0.0" },
+    { 'mason-org/mason.nvim', opts = {} },
+    'mason-org/mason-lspconfig.nvim',
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		{ "j-hui/fidget.nvim", opts = {} },
 		"saghen/blink.cmp",
@@ -77,7 +77,7 @@ return {
 		vim.diagnostic.config({
 			severity_sort = true,
 			float = { border = "rounded", source = "if_many" },
-      underline = { severity = vim.diagnostic.severity.ERROR 
+      underline = { severity = vim.diagnostic.severity.ERROR
       or vim.diagnostic.severity.WARN},
       signs = true and {
 				text = {
@@ -136,63 +136,33 @@ return {
     })
 
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
+		capabilities.textDocument.foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		}
+
 		local servers = {
 			pyright = {
 				settings = {
 					Python = {
-						completion = {
-							callSnippet = "Replace",
-						},
+						completion = { callSnippet = "Replace" },
 						diagnostics = {},
 					},
 				},
 			},
 			rust_analyzer = {},
 			lua_ls = {
-				-- cmd = {...},
-				-- filetypes = { ...},
-				-- capabilities = {},
 				settings = {
 					Lua = {
-						completion = {
-							callSnippet = "Replace",
-						},
-						diagnostics = {
-							globals = { "vim" },
-						},
-					},
-				},
-			},
-			r_language_server = {
-				cmd = {
-					"R.exe",
-					"--slave",
-					"-e",
-					"languageserver::run()",
-				},
-				filetypes = { "r", "rmd", "rmarkdown" },
-				capabilities = {
-					textDocument = {
-						completion = { completionItem = { snippetSupport = true } },
-					},
-				},
-				settings = {
-					R = {
-						lsp = {
-							diagnostics = {
-								suppress = { "line_length_linter" },
-							},
-						},
-						-- path = "C:/Users/icates-doglio/AppData/Local/Programs/R/R-4.4.2/",
-						-- library = "C:/Users/icates-doglio/AppData/Local/R/win-library/4.4",
+						completion = { callSnippet = "Replace" },
+						diagnostics = { globals = { "vim" } },
 					},
 				},
 			},
 		}
+
 		local ensure_installed = vim.tbl_keys(servers or {})
-		vim.list_extend(ensure_installed, {
-			"stylua",
-		})
+		vim.list_extend(ensure_installed, { "stylua" })
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		require("mason-lspconfig").setup({
@@ -201,15 +171,27 @@ return {
 			handlers = {
 				function(server_name)
 					local server = servers[server_name] or {}
-          server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-          capabilities.textDocument.foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true
-          }
-          require("lspconfig")[server_name].setup(server)
+					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+					vim.lsp.config(server_name, server)
+					vim.lsp.enable(server_name)
 				end,
 			},
 		})
+
+		-- r_language_server: bypass mason wrapper, call R directly
+		vim.lsp.config("r_language_server", {
+			cmd = { "C:/Program Files/R/R-4.5.2/bin/R.exe", "--slave", "-e", "languageserver::run()" },
+			filetypes = { "r", "rmd", "rmarkdown" },
+			capabilities = vim.tbl_deep_extend("force", {}, capabilities),
+			settings = {
+				R = {
+					lsp = {
+						diagnostics = { suppress = { "line_length_linter" } },
+					},
+				},
+			},
+		})
+		vim.lsp.enable("r_language_server")
 	end,
 }
 -- vim: ts=2 sts=2 sw=2 et

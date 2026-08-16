@@ -8,9 +8,21 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
-end)
+-- vim.schedule(function()
+-- 	vim.opt.clipboard = "unnamedplus"
+-- end)
+--
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+  },
+}
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -32,7 +44,7 @@ vim.opt.inccommand = "split"
 vim.opt.splitright = true
 
 -- Minscreen lines at edges
-vim.opt.scrolloff = 10
+-- vim.opt.scrolloff = 10
 vim.opt.colorcolumn = "80"
 
 vim.g.undotree_DiffCommand = "FC"
@@ -40,10 +52,10 @@ vim.g.undotree_DiffCommand = "FC"
 vim.g.terminal_emulator = "powershell"
 
 -- Shell Emulator Not sure I want this
-vim.opt.shell = "pwsh" == 1 and "pwsh" or "powershell"
+vim.opt.shell = "pwsh"
 
 vim.o.shellcmdflag =
-	"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+	"-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
 vim.o.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
 vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
 vim.o.shellquote = ""
@@ -57,30 +69,5 @@ vim.opt.fillchars = {
   fold = " ",
 }
 
--- adjustments to the Color Scheme
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    local current = vim.api.nvim_get_hl(0, { name = "Folded" })
-    vim.api.nvim_set_hl(0, "Folded", {
-      bg = "NONE",
-    })
-    -- Add custom line number colors
-    vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#BB9AF7", bold = false })
-    vim.api.nvim_set_hl(0, "LineNr", { fg = "#FFA500", bold = false })
-    vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#F5BDE6", bold = false })
-    -- 80 character mark
-    vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 0, bg = "#3A3A80" })
-  end,
-})
-
-
---"palette": {
---  "blue": "#8AADF4",
---  "closer": "p:os",
---  "lavender": "#BB9AF7",
---  "orange": "#FFA500",
---  "os": "#ACB0BE",
---  "pink": "#F5BDE6"
---}
 
 -- vim: ts=2 sts=2 sw=2 et

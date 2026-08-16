@@ -93,4 +93,24 @@ vim.keymap.set("v", "<leader>r", function()
   loadstring(code)()
 end, { desc = "Run selected Lua code" })
 
+vim.keymap.set("n", "<leader>v", function()
+  local line = vim.api.nvim_get_current_line()
+  vim.cmd("lua " .. line)
+end, { desc = "Execute current line as Lua" })
+
+vim.keymap.set("v", "<leader>v", function()
+  local lines = table.concat(vim.fn.getline("'<", "'>"), "\n")
+  vim.cmd("lua " .. lines)
+end, { desc = "Execute selection as Lua" })
+
+
+vim.api.nvim_create_user_command("Splitpane", function()
+  local proj = vim.env.project or ""
+  local profile = "C:/Users/icates-doglio/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+
+  local cmd = 'silent !wt -w 0 split-pane --commandline "pwsh" -NoProfile -NoExit -Command ' ..
+              '". ' .. profile .. '\r. ' .. proj .. '"'
+  vim.cmd(cmd)
+end, {})
+
 -- vim: ts=2 sts=2 sw=2 et
