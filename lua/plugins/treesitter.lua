@@ -232,7 +232,8 @@ return {
 
       local function select_statement_and_yank(query, reg)
         select.select_textobject(query, "textobjects")
-        vim.cmd('normal! "' .. reg .. "y")
+        vim.cmd('normal! "' .. reg .. 'y')
+        vim.cmd("normal! `>")
       end
 
       -- Execute control enter send
